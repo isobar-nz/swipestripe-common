@@ -1,0 +1,56 @@
+{
+    "name": "swipestripe/swipestripe-common",
+    "type": "silverstripe-vendormodule",
+    "authors": [
+        {
+            "name": "Harsh Chokshi",
+            "email": "harsh.chokshi@littlegiant.co.nz"
+        },
+        {
+            "name": "Dean Middleton",
+            "email": "dean.middleton@littlegiant.co.nz"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1",
+        "swipestripe/swipestripe": "5.0.x-dev"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/littlegiant/silverstripe-swipestripe.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/hchokshi/silverstripe-omnipay.git"
+        }
+    ],
+    "require-dev": {
+        "php-http/guzzle6-adapter": "^1.1",
+        "silverstripe/recipe-cms": "^4.2",
+        "phpunit/phpunit": "^5.7",
+        "php-coveralls/php-coveralls": "^2.1"
+    },
+    "config": {
+        "preferred-install": {
+            "silverstripe/framework": "source",
+            "silverstripe/cms": "source"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "SwipeStripe\\Common\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SwipeStripe\\Common\\Tests\\": "tests/"
+        },
+        "classmap": [
+            "app/src/Page.php",
+            "app/src/PageController.php"
+        ]
+    }
+}
