@@ -5,7 +5,7 @@ namespace SwipeStripe\Common\Product;
 
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
-use SwipeStripe\Pages\HasActiveCart;
+use SwipeStripe\HasActiveCart;
 
 /**
  * Class ProductController
