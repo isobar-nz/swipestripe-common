@@ -7,7 +7,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\FieldType\DBText;
 use SilverStripe\Security\Permission;
-use SwipeStripe\Constants\ShopPermissions;
+use SwipeStripe\ShopPermissions;
 use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
 
