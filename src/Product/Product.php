@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace SwipeStripe\Common\Product;
 
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\FieldType\DBText;
 use SilverStripe\Security\Permission;
 use SwipeStripe\ShopPermissions;
@@ -59,17 +58,6 @@ class Product extends \Page implements PurchasableInterface
         });
 
         return parent::getCMSFields();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getOrderInlineCMSFields(): FieldList
-    {
-        return FieldList::create([
-            TextField::create('Title')->setValue($this->Title),
-            TextField::create('Description')->setValue($this->Description),
-        ]);
     }
 
     /**
