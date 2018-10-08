@@ -37,7 +37,8 @@ class ProductController extends \PageController
      */
     public function AddMore(HTTPRequest $request): HTTPResponse
     {
-        if ($qty = intval($request->getVar('qty'))) {
+        $qty = intval($request->getVar('qty'));
+        if ($qty && $this->ActiveCart->IsMutable()) {
             $this->ActiveCart->addItem($this->dataRecord, $qty);
         }
 
