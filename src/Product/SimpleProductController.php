@@ -8,12 +8,12 @@ use SilverStripe\Control\HTTPResponse;
 use SwipeStripe\HasActiveCart;
 
 /**
- * Class ProductController
+ * Class SimpleProductController
  * @package SwipeStripe\Common\Product
- * @property Product $dataRecord
- * @method Product data()
+ * @property SimpleProduct $dataRecord
+ * @method SimpleProduct data()
  */
-class ProductController extends \PageController
+class SimpleProductController extends \PageController
 {
     use HasActiveCart;
 

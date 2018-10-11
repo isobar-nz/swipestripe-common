@@ -8,7 +8,7 @@
         </section>
     </div>
     <div class="row">
-        <section class="col-md-7 col-md-offset-1">
+        <section class="col-md-10 col-md-offset-1">
             {$Content}
 
             <p>{$Description}</p>

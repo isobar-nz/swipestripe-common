@@ -33,6 +33,6 @@ class ProductAdmin extends ModelAdmin
      * @var array
      */
     private static $managed_models = [
-        Product::class,
+        SimpleProduct::class,
     ];
 }

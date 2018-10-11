@@ -11,17 +11,17 @@ use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
 
 /**
- * Class Product
+ * Class SimpleProduct
  * @package SwipeStripe\Common\Product
  * @property string $Description
  * @property DBPrice $Price
  */
-class Product extends \Page implements PurchasableInterface
+class SimpleProduct extends \Page implements PurchasableInterface
 {
     /**
      * @var string
      */
-    private static $table_name = 'SwipeStripe_Common_Product';
+    private static $table_name = 'SwipeStripe_Common_SimpleProduct';
 
     /**
      * @var array
