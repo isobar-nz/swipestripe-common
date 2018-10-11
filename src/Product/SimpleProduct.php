@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace SwipeStripe\Common\Product;
 
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\FieldType\DBText;
 use SilverStripe\Security\Permission;
-use SwipeStripe\ShopPermissions;
 use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
+use SwipeStripe\ShopPermissions;
 
 /**
  * Class SimpleProduct
@@ -27,8 +26,8 @@ class SimpleProduct extends \Page implements PurchasableInterface
      * @var array
      */
     private static $db = [
-        'Description' => DBText::class,
-        'Price'       => DBPrice::class,
+        'Description' => 'Text',
+        'Price'       => 'Price',
     ];
 
     /**
