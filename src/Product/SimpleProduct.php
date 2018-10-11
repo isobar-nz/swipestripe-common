@@ -35,7 +35,7 @@ class SimpleProduct extends \Page implements PurchasableInterface
      */
     public function getDescription(): string
     {
-        return $this->getField('Description') ?? '';
+        return $this->getField('Description') ?? $this->obj('Content')->Summary() ?? '';
     }
 
     /**
