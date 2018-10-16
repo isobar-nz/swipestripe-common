@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace SwipeStripe\Common\Product\ComplexProduct;
 
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ManyManyList;
 use SilverStripe\Versioned\Versioned;
@@ -107,6 +111,16 @@ class ProductAttributeOption extends DataObject
             $fields->dataFieldByName('PriceModifier')
                 ->setDescription('This value will be added to the base price (negatives to reduce base ' .
                     'price).');
+
+            $productVariations = $fields->dataFieldByName('ProductVariations');
+            if ($productVariations instanceof GridField) {
+                $productVariations->setConfig(
+                    GridFieldConfig_RecordEditor::create()->removeComponentsByType([
+                        GridFieldAddNewButton::class,
+                        GridFieldAddExistingAutocompleter::class,
+                    ])
+                );
+            }
         });
 
         return parent::getCMSFields();
