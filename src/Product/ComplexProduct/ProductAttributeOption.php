@@ -69,8 +69,9 @@ class ProductAttributeOption extends DataObject
      * @var array
      */
     private static $summary_fields = [
-        'Title'               => 'Title',
-        'PriceModifier.Value' => 'Price Modifier',
+        'ProductAttribute.Title' => 'Attribute',
+        'Title'                  => 'Option',
+        'PriceModifier.Value'    => 'Price Modifier',
     ];
 
     /**
