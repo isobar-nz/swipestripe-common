@@ -16,7 +16,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
-        "swipestripe/swipestripe": "5.0.x-dev"
+        "swipestripe/swipestripe": "5.0.x-dev",
+        "symbiote/silverstripe-gridfieldextensions": "^3.2"
     },
     "repositories": [
         {

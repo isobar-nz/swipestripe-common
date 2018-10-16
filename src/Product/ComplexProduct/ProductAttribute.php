@@ -10,6 +10,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\HasManyList;
 use SilverStripe\Versioned\Versioned;
 use SwipeStripe\Common\Product\ProductCMSPermissions;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * Class ProductAttribute
@@ -73,6 +74,8 @@ class ProductAttribute extends DataObject
 
             if ($optionsGridField instanceof GridField) {
                 $config = GridFieldConfig_RecordEditor::create();
+                $config->addComponent(GridFieldOrderableRows::create());
+
                 $optionsGridField->setConfig($config);
             }
         });
