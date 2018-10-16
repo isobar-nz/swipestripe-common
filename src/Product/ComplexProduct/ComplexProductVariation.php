@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace SwipeStripe\Common\Product\ComplexProduct;
 
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\ManyManyList;
+use SilverStripe\ORM\DataQuery;
+use SilverStripe\ORM\ManyManyThroughList;
+use SilverStripe\ORM\SS_List;
 use SilverStripe\Versioned\Versioned;
 use SwipeStripe\Common\Product\ProductCMSPermissions;
 use SwipeStripe\Order\PurchasableInterface;
@@ -15,8 +18,9 @@ use SwipeStripe\Price\DBPrice;
  * @package SwipeStripe\Common\Product\ComplexProduct
  * @property int $ProductID
  * @property-read string $OptionsSummary
+ * @property ComplexProduct $Product
  * @method ComplexProduct Product()
- * @method ManyManyList|ProductAttributeOption[] ProductAttributeOptions()
+ * @method ManyManyThroughList|ProductAttributeOption[] ProductAttributeOptions()
  * @mixin Versioned
  */
 class ComplexProductVariation extends DataObject implements PurchasableInterface
@@ -67,6 +71,67 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     private static $searchable_fields = [
         'ProductAttributeOptions.Title',
     ];
+
+    /**
+     * @param array|ProductAttributeOption[]|int[]|SS_List|iterable $options
+     * @return DataList|static[]
+     * @throws \Exception
+     */
+    public static function getVariationsWithOptions(iterable $options): DataList
+    {
+        return static::get()
+            ->filter('ProductAttributeOptions.ID', $options)
+            ->alterDataQuery(function (DataQuery $query) use ($options) {
+                $table = static::singleton()->baseTable();
+                return $query->groupby('"ComplexProductVariationID"')
+                    ->having([
+                        "COUNT(\"{$table}\".\"ID\")" => count($options),
+                    ]);
+            });
+    }
+
+    /**
+     * @param int[] $optionIDs
+     * @param bool $createIfMissing
+     * @param null|ComplexProduct $product
+     * @return null|static
+     */
+    public static function getVariationWithExactOptions(
+        array $optionIDs,
+        bool $createIfMissing = false,
+        ?ComplexProduct $product = null
+    ): ?self {
+        try {
+            $variations = static::getVariationsWithOptions($optionIDs);
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        sort($optionIDs);
+
+        foreach ($variations as $variation) {
+            $variationOptionIDs = $variation->ProductAttributeOptions()
+                ->sort('ID')
+                ->column('ID');
+
+            if ($variationOptionIDs === $optionIDs) {
+                return $variation;
+            }
+        }
+
+        if (!$createIfMissing) {
+            return null;
+        } elseif ($product === null) {
+            throw new \InvalidArgumentException('Product is required to create missing variation.');
+        }
+
+        $variation = static::create();
+        $variation->Product = $product;
+        $variation->write();
+        $variation->ProductAttributeOptions()->setByIDList($optionIDs);
+
+        return $variation;
+    }
 
     /**
      * @inheritDoc

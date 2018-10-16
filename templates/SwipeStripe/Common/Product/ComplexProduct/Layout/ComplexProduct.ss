@@ -13,6 +13,8 @@
 
             <p>{$Description}</p>
             <h4>{$BasePrice.Nice}</h4>
+
+            {$ComplexProductCartForm}
         </section>
 
         <aside class="col-md-3">
