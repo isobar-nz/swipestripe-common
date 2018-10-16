@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace SwipeStripe\Common\Product\ComplexProduct;
 
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
 use SilverStripe\ORM\ManyManyThroughList;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\Versioned\Versioned;
+use SwipeStripe\Common\Product\ComplexProduct\CMS\GridFieldConfig_VariationOptionsEditor;
 use SwipeStripe\Common\Product\ProductCMSPermissions;
 use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
+use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 
 /**
  * Class ComplexProductVariation
@@ -48,6 +52,13 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
             'from'    => 'ComplexProductVariation',
             'to'      => 'ProductAttributeOption',
         ],
+    ];
+
+    /**
+     * @var array
+     */
+    private static $owns = [
+        'ProductAttributeOptions',
     ];
 
     /**
@@ -175,5 +186,38 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
         }
 
         return implode('; ', $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCMSFields()
+    {
+        $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $options = $fields->dataFieldByName('ProductAttributeOptions');
+            if (!$options instanceof GridField) {
+                return;
+            }
+
+            $fields->remove($options);
+            $fields->removeFieldFromTab('Root', 'ProductAttributeOptions');
+            $fields->addFieldToTab('Root.Main', $options);
+
+            $config = GridFieldConfig_VariationOptionsEditor::create();
+            /** @var GridFieldAddExistingSearchButton $existingSearchButton */
+            $existingSearchButton = $config->getComponentByType(GridFieldAddExistingSearchButton::class);
+
+            // Hide options where attribute already has a selected value (e.g. hide colour options if variation already
+            // has "Red")
+            $selectedOptionIds = $this->ProductAttributeOptions()->column('ProductAttributeID');
+            if (!empty($selectedOptionIds)) {
+                $existingSearchButton->setSearchList(ProductAttributeOption::get()
+                    ->filter('ProductAttributeID:not', $selectedOptionIds));
+            }
+
+            $options->setConfig($config);
+        });
+
+        return parent::getCMSFields();
     }
 }

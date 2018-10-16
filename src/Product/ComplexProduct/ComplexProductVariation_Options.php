@@ -27,4 +27,26 @@ class ComplexProductVariation_Options extends DataObject
         'ComplexProductVariation' => ComplexProductVariation::class,
         'ProductAttributeOption'  => ProductAttributeOption::class,
     ];
+
+    /**
+     * @inheritDoc
+     */
+    public function validate()
+    {
+        $result = parent::validate();
+
+        /** @var static|null $existingAttributeThrough */
+        $existingAttributeThrough = static::get()->filter([
+            'ComplexProductVariationID'                 => $this->ComplexProductVariationID,
+            'ProductAttributeOption.ProductAttributeID' => $this->ProductAttributeOption()->ProductAttributeID,
+        ])->first();
+
+        if ($existingAttributeThrough !== null) {
+            $existingAttributeOption = $existingAttributeThrough->ProductAttributeOption();
+            $result->addError("An option for the {$existingAttributeOption->ProductAttribute()->Title} " .
+                "attribute is already selected ({$existingAttributeOption->Title}) in this variation.");
+        }
+
+        return $result;
+    }
 }

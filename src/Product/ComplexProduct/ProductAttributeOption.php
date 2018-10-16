@@ -83,7 +83,9 @@ class ProductAttributeOption extends DataObject
      */
     private static $searchable_fields = [
         'Title',
-        'ProductAttribute.Title',
+        'ProductAttributeID' => [
+            'title' => 'Product Attribute'
+        ],
     ];
 
     /**
