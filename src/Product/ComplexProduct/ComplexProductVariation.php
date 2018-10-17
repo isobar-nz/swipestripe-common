@@ -84,14 +84,17 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     ];
 
     /**
+     * @param ComplexProduct $product
      * @param array|ProductAttributeOption[]|int[]|SS_List|iterable $options
      * @return DataList|static[]
-     * @throws \Exception
      */
-    public static function getVariationsWithOptions(iterable $options): DataList
+    public static function getVariationsWithOptions(ComplexProduct $product, iterable $options): DataList
     {
         return static::get()
-            ->filter('ProductAttributeOptions.ID', $options)
+            ->filter([
+                'ProductID'                  => $product->ID,
+                'ProductAttributeOptions.ID' => $options,
+            ])
             ->alterDataQuery(function (DataQuery $query) use ($options) {
                 $table = static::singleton()->baseTable();
                 return $query->groupby('"ComplexProductVariationID"')
@@ -103,22 +106,13 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
 
     /**
      * @param int[] $optionIDs
-     * @param bool $createIfMissing
      * @param null|ComplexProduct $product
      * @return null|static
      */
-    public static function getVariationWithExactOptions(
-        array $optionIDs,
-        bool $createIfMissing = false,
-        ?ComplexProduct $product = null
-    ): ?self {
-        try {
-            $variations = static::getVariationsWithOptions($optionIDs);
-        } catch (\Exception $e) {
-            return null;
-        }
-
+    public static function getVariationWithExactOptions(ComplexProduct $product, array $optionIDs): ?self
+    {
         sort($optionIDs);
+        $variations = static::getVariationsWithOptions($product, $optionIDs);
 
         foreach ($variations as $variation) {
             $variationOptionIDs = $variation->ProductAttributeOptions()
@@ -130,18 +124,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
             }
         }
 
-        if (!$createIfMissing) {
-            return null;
-        } elseif ($product === null) {
-            throw new \InvalidArgumentException('Product is required to create missing variation.');
-        }
-
-        $variation = static::create();
-        $variation->Product = $product;
-        $variation->write();
-        $variation->ProductAttributeOptions()->setByIDList($optionIDs);
-
-        return $variation;
+        return null;
     }
 
     /**

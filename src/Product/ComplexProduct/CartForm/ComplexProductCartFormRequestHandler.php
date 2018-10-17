@@ -5,6 +5,8 @@ namespace SwipeStripe\Common\Product\ComplexProduct\CartForm;
 
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Forms\FormRequestHandler;
+use SilverStripe\ORM\ValidationException;
+use SilverStripe\ORM\ValidationResult;
 use SwipeStripe\Common\Product\ComplexProduct\ComplexProductVariation;
 use SwipeStripe\HasActiveCart;
 
@@ -41,8 +43,13 @@ class ComplexProductCartFormRequestHandler extends FormRequestHandler
         }
 
         $quantityField = $form->Fields()->dataFieldByName(ComplexProductCartForm::QUANTITY_FIELD);
-        $variation = ComplexProductVariation::getVariationWithExactOptions($ids, true,
-            $form->getProduct());
+        $variation = ComplexProductVariation::getVariationWithExactOptions($form->getProduct(), $ids);
+
+        if ($variation === null) {
+            throw new ValidationException(ValidationResult::create()
+                ->addError('Sorry, that combination of options is not currently available.'));
+        }
+
         $this->ActiveCart->addItem($variation, $quantityField->dataValue());
 
         return $this->redirectBack();
