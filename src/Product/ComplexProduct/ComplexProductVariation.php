@@ -134,7 +134,31 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     public function getTitle()
     {
-        return $this->Product()->Title;
+        $title = $this->Product()->Title;
+        $prependOptions = [];
+        $appendOptions = [];
+
+        foreach ($this->ProductAttributeOptions() as $option) {
+            if ($option->ProductAttribute()->AddToProductTitle) {
+                if ($option->ProductAttribute()->PrependProductTitle) {
+                    $prependOptions[] = $option->Title;
+                } else {
+                    $appendOptions[] = $option->Title;
+                }
+            }
+        }
+
+        if (!empty($prependOptions)) {
+            $options = implode(' ', $prependOptions);
+            $title = "{$options} {$title}";
+        }
+
+        if (!empty($appendOptions)) {
+            $options = implode(' ', $appendOptions);
+            $title = "{$title} ({$options})";
+        }
+
+        return $title;
     }
 
     /**
@@ -142,17 +166,15 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     public function getDescription(): string
     {
-        $description = $this->Product()->Description ?? $this->Product()->obj('Content')->Summary() ?? '';
+        $description = [
+            $this->Product()->Description ?? $this->Product()->obj('Content')->Summary() ?? '',
+        ];
 
         foreach ($this->ProductAttributeOptions() as $option) {
-            if (!empty($description)) {
-                $description .= "\n";
-            }
-
-            $description .= "{$option->ProductAttribute()->Title}: {$option->Title}";
+            $description[] = "{$option->ProductAttribute()->Title}: {$option->Title}";
         }
 
-        return $description;
+        return implode("\n", $description);
     }
 
     /**

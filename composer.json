@@ -17,7 +17,8 @@
     "require": {
         "php": ">=7.1",
         "swipestripe/swipestripe": "5.0.x-dev",
-        "symbiote/silverstripe-gridfieldextensions": "^3.2"
+        "symbiote/silverstripe-gridfieldextensions": "^3.2",
+        "unclecheese/display-logic": "^2.0"
     },
     "repositories": [
         {
