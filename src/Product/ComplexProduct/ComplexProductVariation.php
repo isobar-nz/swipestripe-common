@@ -191,10 +191,12 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->insertAfter('ProductID',
                 PriceField::create('ProductBasePrice', null)
-                    ->setValue($this->Product()->BasePrice));
+                    ->setValue($this->Product()->BasePrice)
+                    ->setReadonly(true));
             $fields->insertAfter('ProductBasePrice',
                 PriceField::create('VariationPrice', null)
-                    ->setValue($this->Price));
+                    ->setValue($this->Price)
+                    ->setReadonly(true));
 
             $options = $fields->dataFieldByName('ProductAttributeOptions');
             if (!$options instanceof GridField) {
