@@ -15,14 +15,16 @@ use SwipeStripe\Common\Product\ComplexProduct\CMS\GridFieldConfig_VariationOptio
 use SwipeStripe\Common\Product\ProductCMSPermissions;
 use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
+use SwipeStripe\Price\PriceField;
 use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 
 /**
  * Class ComplexProductVariation
  * @package SwipeStripe\Common\Product\ComplexProduct
  * @property int $ProductID
+ * @property DBPrice $Price
+ * @property string $Description
  * @property-read string $OptionsSummary
- * @property ComplexProduct $Product
  * @method ComplexProduct Product()
  * @method ManyManyThroughList|ProductAttributeOption[] ProductAttributeOptions()
  * @mixin Versioned
@@ -177,6 +179,13 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $fields->insertAfter('ProductID',
+                PriceField::create('ProductBasePrice', null)
+                    ->setValue($this->Product()->BasePrice));
+            $fields->insertAfter('ProductBasePrice',
+                PriceField::create('VariationPrice', null)
+                    ->setValue($this->Price));
+
             $options = $fields->dataFieldByName('ProductAttributeOptions');
             if (!$options instanceof GridField) {
                 return;
