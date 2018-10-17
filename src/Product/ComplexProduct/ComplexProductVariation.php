@@ -142,7 +142,17 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     public function getDescription(): string
     {
-        return $this->Product()->Description ?? $this->Product()->obj('Content')->Summary() ?? '';
+        $description = $this->Product()->Description ?? $this->Product()->obj('Content')->Summary() ?? '';
+
+        foreach ($this->ProductAttributeOptions() as $option) {
+            if (!empty($description)) {
+                $description .= "\n";
+            }
+
+            $description .= "{$option->ProductAttribute()->Title}: {$option->Title}";
+        }
+
+        return $description;
     }
 
     /**
