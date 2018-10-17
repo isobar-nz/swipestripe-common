@@ -139,6 +139,23 @@ class ComplexProductTest extends BaseTest
     /**
      *
      */
+    public function testDuplicateVariation()
+    {
+        /** @var ComplexProductVariation $smallRed */
+        $smallRed = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-small-red');
+
+        $duplicate = ComplexProductVariation::create();
+        $duplicate->setComponent('Product', $smallRed->Product());
+        $duplicate->write();
+
+        // Should fail validation if we add a duplicate of the exact same option combos
+        $this->expectException(ValidationException::class);
+        $duplicate->ProductAttributeOptions()->addMany($smallRed->ProductAttributeOptions());
+    }
+
+    /**
+     *
+     */
     public function testGetVariationWithExactOptions()
     {
         /** @var ComplexProduct $tshirt */

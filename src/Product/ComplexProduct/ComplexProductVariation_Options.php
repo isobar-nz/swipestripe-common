@@ -47,6 +47,20 @@ class ComplexProductVariation_Options extends DataObject
                 "attribute is already selected ({$existingAttributeOption->Title}) in this variation.");
         }
 
+        $product = $this->ComplexProductVariation()->Product();
+        $totalAttributes = $product->ProductAttributes()->count();
+        $options = $this->ComplexProductVariation()->ProductAttributeOptions()->column();
+        $options[] = $this->ProductAttributeOptionID; // With the prospective relation we're creating
+
+        // Only check for dupes if this would be a complete variation
+        if (count($options) === $totalAttributes) {
+            $potentialDuplicate = ComplexProductVariation::getVariationWithExactOptions($product, $options);
+            if ($potentialDuplicate !== null && $potentialDuplicate->ID !== $this->ComplexProductVariationID) {
+                $result->addError('Adding that option would create a duplicate of an existing variation ' .
+                    "(ID {$potentialDuplicate->ID}).");
+            }
+        }
+
         return $result;
     }
 }
