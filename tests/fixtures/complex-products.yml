@@ -1,0 +1,61 @@
+SwipeStripe\Common\Product\ComplexProduct\ComplexProduct:
+  tshirt:
+    Title: T-shirt
+    Description: A cotton t-shirt.
+    BasePriceCurrency: NZD
+    BasePriceAmount: 1000 # $10.00
+
+SwipeStripe\Common\Product\ComplexProduct\ProductAttribute:
+  tshirt-size:
+    Title: Size
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+
+  tshirt-colour:
+    Title: Colour
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+
+SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption:
+  tshirt-size-small:
+    Title: Small
+    PriceModifierCurrency: NZD
+    PriceModifierAmount: 0
+    ProductAttribute: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttribute.tshirt-size
+
+  tshirt-size-large:
+    Title: Large
+    PriceModifierCurrency: NZD
+    PriceModifierAmount: 200 # Add $2
+    ProductAttribute: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttribute.tshirt-size
+
+  tshirt-size-unused:
+    Title: Unused
+    ProductAttribute: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttribute.tshirt-size
+
+  tshirt-colour-red:
+    Title: Red
+    PriceModifierCurrency: NZD
+    PriceModifierAmount: 0
+    ProductAttribute: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttribute.tshirt-colour
+
+  tshirt-colour-gold:
+    Title: Gold
+    PriceModifierCurrency: NZD
+    PriceModifierAmount: 500 # Add $5
+    ProductAttribute: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttribute.tshirt-colour
+
+SwipeStripe\Common\Product\ComplexProduct\ComplexProductVariation:
+  tshirt-small-red:
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+    ProductAttributeOptions: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-size-small,=>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-colour-red
+
+  tshirt-small-gold:
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+    ProductAttributeOptions: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-size-small,=>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-colour-gold
+
+  tshirt-large-red:
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+    ProductAttributeOptions: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-size-large,=>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-colour-red
+
+  tshirt-large-gold:
+    Product: =>SwipeStripe\Common\Product\ComplexProduct\ComplexProduct.tshirt
+    ProductAttributeOptions: =>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-size-large,=>SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption.tshirt-colour-gold
