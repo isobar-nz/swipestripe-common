@@ -211,16 +211,29 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
 
             // Hide options where attribute already has a selected value (e.g. hide colour options if variation already
             // has "Red")
-            $selectedOptionIds = $this->ProductAttributeOptions()->column('ProductAttributeID');
-            if (!empty($selectedOptionIds)) {
-                $existingSearchButton->setSearchList(ProductAttributeOption::get()
-                    ->filter('ProductAttributeID:not', $selectedOptionIds));
-            }
+            $existingSearchButton->setSearchList($this->getOptionsForUnselectedAttributes());
 
             $options->setConfig($config);
         });
 
         return parent::getCMSFields();
+    }
+
+    /**
+     * @param SS_List|ProductAttributeOption[]|null $selectedOptions
+     * @return DataList|ProductAttributeOption[]
+     */
+    public function getOptionsForUnselectedAttributes(?SS_List $selectedOptions = null): DataList
+    {
+        $selectedOptions = $selectedOptions ?? $this->ProductAttributeOptions();
+        $options = ProductAttributeOption::get();
+
+        $selectedAttributeIds = $selectedOptions->column('ProductAttributeID');
+        if (!empty($selectedAttributeIds)) {
+            $options = $options->filter('ProductAttributeID:not', $selectedAttributeIds);
+        }
+
+        return $options;
     }
 
     /**

@@ -163,6 +163,35 @@ class ComplexProductTest extends BaseTest
     }
 
     /**
+     *
+     */
+    public function testVariationGetOptionsForUnselectedAttributes()
+    {
+        /** @var ComplexProduct $product */
+        $tshirt = $this->objFromFixture(ComplexProduct::class, 'tshirt');
+
+        /** @var ProductAttributeOption $sizeUnused */
+        $sizeUnused = $this->objFromFixture(ProductAttributeOption::class, 'tshirt-size-unused');
+
+        $variation = ComplexProductVariation::create();
+        $variation->setComponent('Product', $tshirt)
+            ->write();
+        $variation->ProductAttributeOptions()->add($sizeUnused);
+
+        $availableOptions = $variation->getOptionsForUnselectedAttributes()->sort('ID', 'ASC')->column();
+        $expectedOptionIds = [
+            $this->idFromFixture(ProductAttributeOption::class, 'tshirt-colour-red'),
+            $this->idFromFixture(ProductAttributeOption::class, 'tshirt-colour-gold'),
+        ];
+        sort($expectedOptionIds);
+        $this->assertSame($expectedOptionIds, $availableOptions);
+
+        // No options to add when all attributes have a value
+        $variation->ProductAttributeOptions()->add($expectedOptionIds[0]);
+        $this->assertCount(0, $variation->getOptionsForUnselectedAttributes());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function setUp()
