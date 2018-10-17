@@ -114,8 +114,8 @@ class ComplexProductTest extends BaseTest
 
         $variationIds = ComplexProductVariation::getVariationsWithOptions($tshirt,
             [$this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-small')])
+            ->sort('ID', 'ASC')
             ->column();
-        sort($variationIds);
         $this->assertSame($smallVariationIds, $variationIds);
 
         $this->assertEmpty(ComplexProductVariation::getVariationsWithOptions($tshirt,

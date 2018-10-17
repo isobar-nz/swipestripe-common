@@ -9,6 +9,7 @@ use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
 use SilverStripe\ORM\ManyManyThroughList;
+use SilverStripe\ORM\Relation;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\Versioned\Versioned;
 use SwipeStripe\Common\Product\ComplexProduct\CMS\GridFieldConfig_VariationOptionsEditor;
@@ -26,7 +27,6 @@ use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
  * @property string $Description
  * @property-read string $OptionsSummary
  * @method ComplexProduct Product()
- * @method ManyManyThroughList|ProductAttributeOption[] ProductAttributeOptions()
  * @mixin Versioned
  */
 class ComplexProductVariation extends DataObject implements PurchasableInterface
@@ -221,5 +221,14 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
         });
 
         return parent::getCMSFields();
+    }
+
+    /**
+     * @return Relation|ManyManyThroughList|ProductAttributeOption[]
+     */
+    public function ProductAttributeOptions(): Relation
+    {
+        return $this->getManyManyComponents('ProductAttributeOptions')
+            ->sort('ProductAttribute.Sort', 'ASC');
     }
 }

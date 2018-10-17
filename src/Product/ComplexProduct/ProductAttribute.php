@@ -34,6 +34,7 @@ class ProductAttribute extends DataObject
      */
     private static $db = [
         'Title' => 'Varchar',
+        'Sort'  => 'Int',
     ];
 
     /**
@@ -49,6 +50,11 @@ class ProductAttribute extends DataObject
     private static $has_many = [
         'ProductAttributeOptions' => ProductAttributeOption::class,
     ];
+
+    /**
+     * @var string
+     */
+    private static $default_sort = '"Sort" ASC';
 
     /**
      * @var array

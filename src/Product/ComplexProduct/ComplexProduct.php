@@ -9,6 +9,7 @@ use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\ORM\HasManyList;
 use SwipeStripe\Common\Product\ProductCMSPermissions;
 use SwipeStripe\Price\DBPrice;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
 
 /**
  * Class ComplexProduct
@@ -59,9 +60,12 @@ class ComplexProduct extends \Page
             $fields->insertAfter('MenuTitle', $this->obj('Description')->scaffoldFormField());
             $fields->insertAfter('Description', $this->obj('BasePrice')->scaffoldFormField());
 
+            $attributesConfig = GridFieldConfig_RecordEditor::create();
+            $attributesConfig->addComponent(GridFieldOrderableRows::create());
+
             $fields->addFieldToTab('Root.ProductAttributes',
                 GridField::create('ProductAttributes', null, $this->ProductAttributes(),
-                    GridFieldConfig_RecordEditor::create()));
+                    $attributesConfig));
 
             $fields->addFieldToTab('Root.ProductVariations',
                 GridField::create('ProductVariations', null, $this->ProductVariations(),
