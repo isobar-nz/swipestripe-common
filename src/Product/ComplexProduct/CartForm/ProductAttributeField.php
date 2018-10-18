@@ -27,7 +27,9 @@ class ProductAttributeField extends DropdownField
     public function __construct(ProductAttribute $attribute, string $name, ?string $title = null, $value = null)
     {
         $this->productAttribute = $attribute;
-        parent::__construct($name, $title, $attribute->ProductAttributeOptions(), $value);
+        parent::__construct($name, $title,
+            $attribute->ProductAttributeOptions()->map('ID', 'DropdownTitle'),
+            $value);
     }
 
     /**

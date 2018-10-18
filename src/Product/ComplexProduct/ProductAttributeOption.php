@@ -17,7 +17,7 @@ use SwipeStripe\Price\DBPrice;
 /**
  * Class ProductAttributeOption
  * @package SwipeStripe\Common\Product\ComplexProduct
- * @property-read string $DisplayTitle
+ * @property-read string $DropdownTitle
  * @property DBPrice $PriceModifier
  * @property int $Sort
  * @property int $ProductAttributeID
@@ -91,7 +91,7 @@ class ProductAttributeOption extends DataObject
     /**
      * @return string
      */
-    public function getDisplayTitle(): string
+    public function getDropdownTitle(): string
     {
         $priceModifierMoney = $this->PriceModifier->getMoney();
         if ($priceModifierMoney->isZero()) {
