@@ -46,7 +46,7 @@ class ComplexProductCartFormRequestHandler extends FormRequestHandler
         $variation = ComplexProductVariation::getVariationWithExactOptions($form->getProduct(), $ids);
 
         if ($variation === null) {
-            throw new ValidationException(ValidationResult::create()
+            throw ValidationException::create(ValidationResult::create()
                 ->addError('Sorry, that combination of options is not currently available.'));
         }
 

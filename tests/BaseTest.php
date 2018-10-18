@@ -8,6 +8,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Versioned\Versioned;
 use SwipeStripe\Price\SupportedCurrencies\SingleSupportedCurrency;
 use SwipeStripe\Price\SupportedCurrencies\SupportedCurrenciesInterface;
 
@@ -44,6 +45,7 @@ abstract class BaseTest extends SapphireTest
     {
         parent::setUp();
 
+        Versioned::set_stage(Versioned::LIVE);
         $this->currency = new Currency(static::CURRENCY);
     }
 

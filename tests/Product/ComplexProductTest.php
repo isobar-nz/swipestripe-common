@@ -219,7 +219,5 @@ class ComplexProductTest extends BaseTest
         static::registerPublishingBlueprint(ComplexProductVariation::class);
 
         parent::setUp();
-
-        Versioned::set_stage(Versioned::LIVE);
     }
 }
