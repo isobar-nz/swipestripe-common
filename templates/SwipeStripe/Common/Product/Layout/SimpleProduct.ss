@@ -11,7 +11,10 @@
         <section class="col-md-10 col-md-offset-1">
             {$Content}
 
-            <p>{$Description}</p>
+            <% if $ShortDescription %>
+                <p>{$ShortDescription}</p>
+            <% end_if %>
+
             <h4>{$Price.Nice}</h4>
 
             <a href="{$Link('AddMore')}?qty=1">Add To Cart</a>

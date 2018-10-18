@@ -8,6 +8,7 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\ManyManyThroughList;
 use SilverStripe\ORM\Relation;
 use SilverStripe\ORM\SS_List;
@@ -164,17 +165,9 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     /**
      * @inheritDoc
      */
-    public function getDescription(): string
+    public function getDescription(): DBHTMLText
     {
-        $description = [
-            $this->Product()->Description ?? $this->Product()->obj('Content')->Summary() ?? '',
-        ];
-
-        foreach ($this->ProductAttributeOptions() as $option) {
-            $description[] = "{$option->ProductAttribute()->Title}: {$option->Title}";
-        }
-
-        return implode("\n", $description);
+        return $this->renderWith($this->getViewerTemplates('_Description'));
     }
 
     /**

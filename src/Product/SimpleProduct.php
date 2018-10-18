@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace SwipeStripe\Common\Product;
 
 use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SwipeStripe\Order\PurchasableInterface;
 use SwipeStripe\Price\DBPrice;
 
 /**
  * Class SimpleProduct
  * @package SwipeStripe\Common\Product
+ * @property string $ShortDescription
  * @property string $Description
  * @property DBPrice $Price
  */
@@ -26,16 +28,16 @@ class SimpleProduct extends \Page implements PurchasableInterface
      * @var array
      */
     private static $db = [
-        'Description' => 'Text',
-        'Price'       => 'Price',
+        'ShortDescription' => 'Text',
+        'Price'            => 'Price',
     ];
 
     /**
      * @inheritdoc
      */
-    public function getDescription(): string
+    public function getDescription(): DBHTMLText
     {
-        return $this->getField('Description') ?? $this->obj('Content')->Summary() ?? '';
+        return $this->renderWith($this->getViewerTemplates('_Description'));
     }
 
     /**
@@ -52,8 +54,8 @@ class SimpleProduct extends \Page implements PurchasableInterface
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
-            $fields->insertAfter('MenuTitle', $this->obj('Description')->scaffoldFormField());
-            $fields->insertAfter('Description', $this->obj('Price')->scaffoldFormField());
+            $fields->insertAfter('MenuTitle', $this->obj('ShortDescription')->scaffoldFormField());
+            $fields->insertAfter('ShortDescription', $this->obj('Price')->scaffoldFormField());
         });
 
         return parent::getCMSFields();
