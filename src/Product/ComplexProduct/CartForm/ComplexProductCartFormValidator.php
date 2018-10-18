@@ -8,6 +8,7 @@ use SilverStripe\Forms\RequiredFields;
 /**
  * Class ComplexProductCartFormValidator
  * @package SwipeStripe\Common\Product\ComplexProduct\CartForm
+ * @property ComplexProductCartForm $form
  */
 class ComplexProductCartFormValidator extends RequiredFields
 {
@@ -17,6 +18,12 @@ class ComplexProductCartFormValidator extends RequiredFields
     public function php($data)
     {
         parent::php($data);
+
+        if (!$this->form->getCart()->IsMutable()) {
+            $this->getResult()->addError(_t(self::class . '.CART_LOCKED',
+                'Your cart is currently locked because there is a checkout in progress. Please complete or ' .
+                'cancel the checkout process to modify your cart.'));
+        }
 
         if ($this->getResult()->isValid() && intval($data[ComplexProductCartForm::QUANTITY_FIELD]) < 1) {
             $this->validationError(ComplexProductCartForm::QUANTITY_FIELD,
