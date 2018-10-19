@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace SwipeStripe\Common\Product;
 
 use SilverStripe\Admin\ModelAdmin;
+use SwipeStripe\Common\Product\ComplexProduct\ComplexProduct;
 use SwipeStripe\ShopPermissions;
 
 /**
@@ -33,6 +34,7 @@ class ProductAdmin extends ModelAdmin
      * @var array
      */
     private static $managed_models = [
-        Product::class,
+        SimpleProduct::class,
+        ComplexProduct::class,
     ];
 }
