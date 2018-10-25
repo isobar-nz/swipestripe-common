@@ -28,7 +28,6 @@ use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
  * @property string $Description
  * @property-read string $OptionsSummary
  * @method ComplexProduct Product()
- * @mixin Versioned
  */
 class ComplexProductVariation extends DataObject implements PurchasableInterface
 {
@@ -182,6 +181,15 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
         }
 
         return DBPrice::create_field(DBPrice::INJECTOR_SPEC, $basePrice);
+    }
+
+    /**
+     * @param null|string $action
+     * @return string
+     */
+    public function Link(?string $action = null): string
+    {
+        return $this->Product()->Link($action);
     }
 
     /**
