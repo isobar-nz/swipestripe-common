@@ -209,6 +209,16 @@ class ComplexProductTest extends BaseTest
     }
 
     /**
+     *
+     */
+    public function testVariationLink()
+    {
+        /** @var ComplexProductVariation $variation */
+        $variation = ComplexProductVariation::get_one(ComplexProductVariation::class);
+        $this->assertSame($variation->Product()->Link(), $variation->Link());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function setUp()
