@@ -18,7 +18,7 @@ trait ProductCMSPermissions
      */
     public function canView($member = null)
     {
-        return Permission::check(ShopPermissions::VIEW_PRODUCTS) || parent::canView($member);
+        return Permission::checkMember($member, ShopPermissions::VIEW_PRODUCTS) || parent::canView($member);
     }
 
     /**
@@ -26,7 +26,7 @@ trait ProductCMSPermissions
      */
     public function canPublish($member = null)
     {
-        return Permission::check(ShopPermissions::EDIT_PRODUCTS) || parent::canPublish($member);
+        return Permission::checkMember($member, ShopPermissions::EDIT_PRODUCTS) || parent::canPublish($member);
     }
 
     /**
@@ -34,7 +34,7 @@ trait ProductCMSPermissions
      */
     public function canDelete($member = null)
     {
-        return Permission::check(ShopPermissions::DELETE_PRODUCTS) || parent::canDelete($member);
+        return Permission::checkMember($member, ShopPermissions::DELETE_PRODUCTS) || parent::canDelete($member);
     }
 
     /**
@@ -42,7 +42,8 @@ trait ProductCMSPermissions
      */
     public function canCreate($member = null, $context = [])
     {
-        return Permission::check(ShopPermissions::CREATE_PRODUCTS) || parent::canCreate($member, $context);
+        return Permission::checkMember($member, ShopPermissions::CREATE_PRODUCTS) || parent::canCreate($member,
+                $context);
     }
 
     /**
@@ -50,6 +51,6 @@ trait ProductCMSPermissions
      */
     public function canEdit($member = null)
     {
-        return Permission::check(ShopPermissions::EDIT_PRODUCTS) || parent::canEdit($member);
+        return Permission::checkMember($member, ShopPermissions::EDIT_PRODUCTS) || parent::canEdit($member);
     }
 }
