@@ -51,15 +51,17 @@ class ComplexProductCartForm extends Form
      */
     protected function buildFields(): FieldList
     {
-        $fields = [];
+        $fields = FieldList::create();
 
-        foreach ($this->product->ProductAttributes() as $attribute) {
-            $fields[] = ProductAttributeField::create($attribute, "Attribute_{$attribute->ID}", $attribute->Title);
+        foreach ($this->getProduct()->ProductAttributes() as $attribute) {
+            $fields->push(ProductAttributeField::create($attribute, "Attribute_{$attribute->ID}", $attribute->Title));
         }
 
-        $fields[] = NumericField::create(static::QUANTITY_FIELD, null, 1);
+        $fields->push(NumericField::create(static::QUANTITY_FIELD,
+            _t(self::class . '.QUANTITY', 'Quantity'), 1));
 
-        return FieldList::create($fields);
+        $this->extend('updateFields', $fields);
+        return $fields;
     }
 
     /**
@@ -67,9 +69,12 @@ class ComplexProductCartForm extends Form
      */
     protected function buildActions(): FieldList
     {
-        return FieldList::create(
+        $actions = FieldList::create(
             FormAction::create('AddToCart', _t(self::class . '.ADD_TO_CART', 'Add to cart'))
         );
+
+        $this->extend('updateActions', $actions);
+        return $actions;
     }
 
     /**
