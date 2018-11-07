@@ -53,6 +53,7 @@ class ComplexProduct extends \Page
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function getCMSFields()
     {

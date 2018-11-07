@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace SwipeStripe\Common\Product\ComplexProduct;
 
-use SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartForm;
+use SilverStripe\Core\Injector\Injector;
+use SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormInterface;
 use SwipeStripe\HasActiveCart;
 
 /**
@@ -24,10 +25,15 @@ class ComplexProductController extends \PageController
     ];
 
     /**
-     * @return ComplexProductCartForm
+     * @return ComplexProductCartFormInterface
      */
-    public function ComplexProductCartForm(): ComplexProductCartForm
+    public function ComplexProductCartForm(): ComplexProductCartFormInterface
     {
-        return ComplexProductCartForm::create($this->ActiveCart, $this->dataRecord, $this, __FUNCTION__);
+        /** @var ComplexProductCartFormInterface $form */
+        $form = Injector::inst()->create(ComplexProductCartFormInterface::class, $this->dataRecord, $this,
+            __FUNCTION__);
+        $form->setCart($this->ActiveCart);
+
+        return $form;
     }
 }

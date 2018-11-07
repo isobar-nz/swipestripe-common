@@ -1,0 +1,7 @@
+---
+Name: swipestripe-common-injector
+---
+
+SilverStripe\Core\Injector\Injector:
+  SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormInterface:
+    class: SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartForm

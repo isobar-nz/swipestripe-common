@@ -50,6 +50,7 @@ class SimpleProduct extends \Page implements PurchasableInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getCMSFields()
     {

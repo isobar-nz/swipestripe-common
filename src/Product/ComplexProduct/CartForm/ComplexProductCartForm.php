@@ -15,7 +15,7 @@ use SwipeStripe\Order\Order;
  * Class ComplexProductCartForm
  * @package SwipeStripe\Common\Product\ComplexProduct\CartForm
  */
-class ComplexProductCartForm extends Form
+class ComplexProductCartForm extends Form implements ComplexProductCartFormInterface
 {
     const QUANTITY_FIELD = 'Quantity';
 
@@ -33,13 +33,11 @@ class ComplexProductCartForm extends Form
      * @inheritDoc
      */
     public function __construct(
-        Order $cart,
         ComplexProduct $product,
         RequestHandler $controller = null,
         string $name = self::DEFAULT_NAME
     ) {
-        $this->cart = $cart;
-        $this->product = $product;
+        $this->setProduct($product);
 
         $fields = $this->buildFields();
         parent::__construct($controller, $name, $fields, $this->buildActions(),
@@ -51,15 +49,17 @@ class ComplexProductCartForm extends Form
      */
     protected function buildFields(): FieldList
     {
-        $fields = [];
+        $fields = FieldList::create();
 
-        foreach ($this->product->ProductAttributes() as $attribute) {
-            $fields[] = ProductAttributeField::create($attribute, "Attribute_{$attribute->ID}", $attribute->Title);
+        foreach ($this->getProduct()->ProductAttributes() as $attribute) {
+            $fields->push(ProductAttributeField::create($attribute, "Attribute_{$attribute->ID}", $attribute->Title));
         }
 
-        $fields[] = NumericField::create(static::QUANTITY_FIELD, null, 1);
+        $fields->push(NumericField::create(static::QUANTITY_FIELD,
+            _t(self::class . '.QUANTITY', 'Quantity'), 1));
 
-        return FieldList::create($fields);
+        $this->extend('updateFields', $fields);
+        return $fields;
     }
 
     /**
@@ -67,9 +67,12 @@ class ComplexProductCartForm extends Form
      */
     protected function buildActions(): FieldList
     {
-        return FieldList::create(
+        $actions = FieldList::create(
             FormAction::create('AddToCart', _t(self::class . '.ADD_TO_CART', 'Add to cart'))
         );
+
+        $this->extend('updateActions', $actions);
+        return $actions;
     }
 
     /**
@@ -86,6 +89,24 @@ class ComplexProductCartForm extends Form
     public function getProduct(): ComplexProduct
     {
         return $this->product;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCart(Order $cart): ComplexProductCartFormInterface
+    {
+        $this->cart = $cart;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setProduct(ComplexProduct $product): ComplexProductCartFormInterface
+    {
+        $this->product = $product;
+        return $this;
     }
 
     /**

@@ -17,7 +17,7 @@
 
             <h4>{$Price.Nice}</h4>
 
-            <a href="{$Link('AddMore')}?qty=1">Add To Cart</a>
+            <a href="{$Link('AddMore')}?qty=1"><%t SwipeStripe\\Common\\Product\\Layout\\SimpleProduct.ADD_TO_CART 'Add to cart' %></a>
         </section>
 
         <aside class="col-md-3">

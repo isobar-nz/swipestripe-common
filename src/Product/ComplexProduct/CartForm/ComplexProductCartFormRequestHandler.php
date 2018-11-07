@@ -22,18 +22,17 @@ class ComplexProductCartFormRequestHandler extends FormRequestHandler
     /**
      * @inheritDoc
      */
-    public function __construct(ComplexProductCartForm $form)
+    public function __construct(ComplexProductCartFormInterface $form)
     {
         parent::__construct($form);
     }
 
     /**
      * @param array $data
-     * @param ComplexProductCartForm $form
+     * @param ComplexProductCartFormInterface $form
      * @return HTTPResponse
-     * @throws \Exception
      */
-    public function AddToCart(array $data, ComplexProductCartForm $form): HTTPResponse
+    public function AddToCart(array $data, ComplexProductCartFormInterface $form): HTTPResponse
     {
         $ids = [];
         foreach ($form->Fields()->dataFields() as $dataField) {
@@ -47,7 +46,8 @@ class ComplexProductCartFormRequestHandler extends FormRequestHandler
 
         if ($variation === null) {
             throw ValidationException::create(ValidationResult::create()
-                ->addError('Sorry, that combination of options is not currently available.'));
+                ->addError(_t(self::class . '.VARIATION_UNAVAILABLE',
+                    'Sorry, that combination of options is not currently available.')));
         }
 
         $this->ActiveCart->addItem($variation, $quantityField->dataValue());
