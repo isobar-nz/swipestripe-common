@@ -208,6 +208,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function getCMSFields()
     {

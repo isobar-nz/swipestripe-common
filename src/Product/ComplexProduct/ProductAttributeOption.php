@@ -104,6 +104,7 @@ class ProductAttributeOption extends DataObject
 
     /**
      * @inheritdoc
+     * @codeCoverageIgnore
      */
     public function getCMSFields()
     {
