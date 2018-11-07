@@ -8,7 +8,7 @@ use SilverStripe\Forms\RequiredFields;
 /**
  * Class ComplexProductCartFormValidator
  * @package SwipeStripe\Common\Product\ComplexProduct\CartForm
- * @property ComplexProductCartForm $form
+ * @property ComplexProductCartFormInterface $form
  */
 class ComplexProductCartFormValidator extends RequiredFields
 {
@@ -38,7 +38,7 @@ class ComplexProductCartFormValidator extends RequiredFields
      */
     public function setForm($form)
     {
-        if (!$form instanceof ComplexProductCartForm) {
+        if (!$form instanceof ComplexProductCartFormInterface) {
             throw new \InvalidArgumentException();
         }
 

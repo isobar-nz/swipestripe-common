@@ -15,7 +15,7 @@ use SwipeStripe\Order\Order;
  * Class ComplexProductCartForm
  * @package SwipeStripe\Common\Product\ComplexProduct\CartForm
  */
-class ComplexProductCartForm extends Form
+class ComplexProductCartForm extends Form implements ComplexProductCartFormInterface
 {
     const QUANTITY_FIELD = 'Quantity';
 
@@ -33,13 +33,11 @@ class ComplexProductCartForm extends Form
      * @inheritDoc
      */
     public function __construct(
-        Order $cart,
         ComplexProduct $product,
         RequestHandler $controller = null,
         string $name = self::DEFAULT_NAME
     ) {
-        $this->cart = $cart;
-        $this->product = $product;
+        $this->setProduct($product);
 
         $fields = $this->buildFields();
         parent::__construct($controller, $name, $fields, $this->buildActions(),
@@ -91,6 +89,24 @@ class ComplexProductCartForm extends Form
     public function getProduct(): ComplexProduct
     {
         return $this->product;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCart(Order $cart): ComplexProductCartFormInterface
+    {
+        $this->cart = $cart;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setProduct(ComplexProduct $product): ComplexProductCartFormInterface
+    {
+        $this->product = $product;
+        return $this;
     }
 
     /**
