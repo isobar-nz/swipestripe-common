@@ -1,0 +1,11 @@
+SwipeStripe\Common\Product\SimpleProduct:
+  knick-knack:
+    Title: Knick knack
+    PriceAmount: 200
+    PriceCurrency: NZD
+
+  out-of-stock:
+    Title: Out of stock
+    PriceAmount: 1500
+    PriceCurrency: NZD
+    OutOfStock: 1

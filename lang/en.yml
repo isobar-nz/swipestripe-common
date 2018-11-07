@@ -40,6 +40,7 @@ en:
     SINGULARNAME: 'Product Attribute Option'
   SwipeStripe\Common\Product\Layout\SimpleProduct:
     ADD_TO_CART: 'Add to cart'
+    OUT_OF_STOCK: 'Out of stock'
   SwipeStripe\Common\Product\ProductAdmin:
     MENUTITLE: Products
   SwipeStripe\Common\Product\SimpleProduct:

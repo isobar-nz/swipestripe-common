@@ -17,7 +17,11 @@
 
             <h4>{$Price.Nice}</h4>
 
-            <a href="{$Link('AddMore')}?qty=1"><%t SwipeStripe\\Common\\Product\\Layout\\SimpleProduct.ADD_TO_CART 'Add to cart' %></a>
+            <% if $IsOutOfStock %>
+                <strong><%t SwipeStripe\\Common\\Product\\Layout\\SimpleProduct.OUT_OF_STOCK 'Out of stock' %></strong>
+            <% else %>
+                <a href="{$Link('AddMore')}?qty=1"><%t SwipeStripe\\Common\\Product\\Layout\\SimpleProduct.ADD_TO_CART 'Add to cart' %></a>
+            <% end_if %>
         </section>
 
         <aside class="col-md-3">
