@@ -99,7 +99,10 @@ class ProductAttributeOption extends DataObject
         }
 
         $prefix = $priceModifierMoney->isPositive() ? '+' : '';
-        return "{$this->Title} ({$prefix}{$this->PriceModifier->Nice()})";
+        return _t(self::class . '.DROPDOWN_FORMAT', '{title} ({price_modifier})', [
+            'title'          => $this->Title,
+            'price_modifier' => $prefix . $this->PriceModifier->Nice(),
+        ]);
     }
 
     /**

@@ -1,0 +1,50 @@
+en:
+  SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartForm:
+    ADD_TO_CART: 'Add to cart'
+    QUANTITY: Quantity
+  SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormRequestHandler:
+    VARIATION_UNAVAILABLE: 'Sorry, that combination of options is not currently available.'
+  SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormValidator:
+    CART_LOCKED: 'Your cart is currently locked because there is a checkout in progress. Please complete or cancel the checkout process to modify your cart.'
+    INVALID_QUANTITY: 'You can''t add less than one item to your cart!'
+  SwipeStripe\Common\Product\ComplexProduct\ComplexProduct:
+    PLURALNAME: 'Complex Products'
+    PLURALS:
+      one: 'A Complex Product'
+      other: '{count} Complex Products'
+    SINGULARNAME: 'Complex Product'
+  SwipeStripe\Common\Product\ComplexProduct\ComplexProductVariation:
+    PLURALNAME: 'Complex Product Variations'
+    PLURALS:
+      one: 'A Complex Product Variation'
+      other: '{count} Complex Product Variations'
+    SINGULARNAME: 'Complex Product Variation'
+  SwipeStripe\Common\Product\ComplexProduct\ComplexProductVariation_Options:
+    PLURALNAME: 'Complex Product Variation Optionss'
+    PLURALS:
+      one: 'A Complex Product Variation Options'
+      other: '{count} Complex Product Variation Optionss'
+    SINGULARNAME: 'Complex Product Variation Options'
+  SwipeStripe\Common\Product\ComplexProduct\ProductAttribute:
+    PLURALNAME: 'Product Attributes'
+    PLURALS:
+      one: 'A Product Attribute'
+      other: '{count} Product Attributes'
+    SINGULARNAME: 'Product Attribute'
+  SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption:
+    DROPDOWN_FORMAT: '{title} ({price_modifier})'
+    PLURALNAME: 'Product Attribute Options'
+    PLURALS:
+      one: 'A Product Attribute Option'
+      other: '{count} Product Attribute Options'
+    SINGULARNAME: 'Product Attribute Option'
+  SwipeStripe\Common\Product\Layout\SimpleProduct:
+    ADD_TO_CART: 'Add to cart'
+  SwipeStripe\Common\Product\ProductAdmin:
+    MENUTITLE: Products
+  SwipeStripe\Common\Product\SimpleProduct:
+    PLURALNAME: 'Simple Products'
+    PLURALS:
+      one: 'A Simple Product'
+      other: '{count} Simple Products'
+    SINGULARNAME: 'Simple Product'
