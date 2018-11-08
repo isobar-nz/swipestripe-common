@@ -7,7 +7,7 @@ use SwipeStripe\Common\Product\ComplexProduct\CartForm\ProductAttributeField;
 use SwipeStripe\Common\Product\ComplexProduct\ProductAttribute;
 use SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption;
 use SwipeStripe\Common\Tests\BaseTest;
-use SwipeStripe\Common\Tests\Fixtures;
+use SwipeStripe\Common\Tests\Fixtures\Fixtures;
 
 /**
  * Class ProductAttributeFieldTest

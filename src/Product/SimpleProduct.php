@@ -14,6 +14,7 @@ use SwipeStripe\Price\DBPrice;
  * @property string $ShortDescription
  * @property string $Description
  * @property DBPrice $Price
+ * @property bool $OutOfStock
  */
 class SimpleProduct extends \Page implements PurchasableInterface
 {
@@ -30,6 +31,7 @@ class SimpleProduct extends \Page implements PurchasableInterface
     private static $db = [
         'ShortDescription' => 'Text',
         'Price'            => 'Price',
+        'OutOfStock'       => 'Boolean',
     ];
 
     /**
@@ -49,6 +51,17 @@ class SimpleProduct extends \Page implements PurchasableInterface
     }
 
     /**
+     * @return bool
+     */
+    public function IsOutOfStock(): bool
+    {
+        $outOfStock = boolval($this->OutOfStock);
+
+        $this->extend('IsOutOfStock', $outOfStock);
+        return boolval($outOfStock);
+    }
+
+    /**
      * @inheritDoc
      * @codeCoverageIgnore
      */
@@ -57,6 +70,7 @@ class SimpleProduct extends \Page implements PurchasableInterface
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->insertAfter('MenuTitle', $this->obj('ShortDescription')->scaffoldFormField());
             $fields->insertAfter('ShortDescription', $this->obj('Price')->scaffoldFormField());
+            $fields->insertAfter('Price', $this->obj('OutOfStock')->scaffoldFormField());
         });
 
         return parent::getCMSFields();

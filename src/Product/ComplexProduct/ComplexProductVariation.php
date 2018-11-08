@@ -24,8 +24,9 @@ use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
  * Class ComplexProductVariation
  * @package SwipeStripe\Common\Product\ComplexProduct
  * @property int $ProductID
- * @property DBPrice $Price
- * @property string $Description
+ * @property bool $OutOfStock
+ * @property-read DBPrice $Price
+ * @property-read string $Description
  * @property-read string $OptionsSummary
  * @method ComplexProduct Product()
  */
@@ -37,6 +38,13 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      * @var string
      */
     private static $table_name = 'SwipeStripe_Common_ComplexProductVariation';
+
+    /**
+     * @var array
+     */
+    private static $db = [
+        'OutOfStock' => 'Boolean',
+    ];
 
     /**
      * @var array
@@ -214,13 +222,14 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->insertAfter('ProductID',
-                PriceField::create('ProductBasePrice', null)
+                PriceField::create('ProductBasePrice')
                     ->setValue($this->Product()->BasePrice)
                     ->setReadonly(true));
             $fields->insertAfter('ProductBasePrice',
-                PriceField::create('VariationPrice', null)
+                PriceField::create('VariationPrice')
                     ->setValue($this->Price)
                     ->setReadonly(true));
+            $fields->insertAfter('VariationPrice', $this->dbObject('OutOfStock')->scaffoldFormField());
 
             $options = $fields->dataFieldByName('ProductAttributeOptions');
             if (!$options instanceof GridField) {
@@ -269,5 +278,16 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     {
         return $this->getManyManyComponents('ProductAttributeOptions')
             ->sort('ProductAttribute.Sort', 'ASC');
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsOutOfStock(): bool
+    {
+        $outOfStock = boolval($this->OutOfStock);
+
+        $this->extend('IsOutOfStock', $outOfStock);
+        return $outOfStock;
     }
 }

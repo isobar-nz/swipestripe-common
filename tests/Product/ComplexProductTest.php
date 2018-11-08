@@ -11,7 +11,7 @@ use SwipeStripe\Common\Product\ComplexProduct\ComplexProductVariation;
 use SwipeStripe\Common\Product\ComplexProduct\ProductAttribute;
 use SwipeStripe\Common\Product\ComplexProduct\ProductAttributeOption;
 use SwipeStripe\Common\Tests\BaseTest;
-use SwipeStripe\Common\Tests\Fixtures;
+use SwipeStripe\Common\Tests\Fixtures\Fixtures;
 use SwipeStripe\Order\Order;
 
 /**
@@ -31,6 +31,11 @@ class ComplexProductTest extends BaseTest
      * @var bool
      */
     protected $usesDatabase = true;
+
+    /**
+     * @var ComplexProduct
+     */
+    protected $tshirt;
 
     /**
      *
@@ -103,22 +108,19 @@ class ComplexProductTest extends BaseTest
      */
     public function testGetVariationsWithOptions()
     {
-        /** @var ComplexProduct $tshirt */
-        $tshirt = $this->objFromFixture(ComplexProduct::class, 'tshirt');
-
         $smallVariationIds = [
             $this->idFromFixture(ComplexProductVariation::class, 'tshirt-small-red'),
             $this->idFromFixture(ComplexProductVariation::class, 'tshirt-small-gold'),
         ];
         sort($smallVariationIds);
 
-        $variationIds = ComplexProductVariation::getVariationsWithOptions($tshirt,
+        $variationIds = ComplexProductVariation::getVariationsWithOptions($this->tshirt,
             [$this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-small')])
             ->sort('ID', 'ASC')
             ->column();
         $this->assertSame($smallVariationIds, $variationIds);
 
-        $this->assertEmpty(ComplexProductVariation::getVariationsWithOptions($tshirt,
+        $this->assertEmpty(ComplexProductVariation::getVariationsWithOptions($this->tshirt,
             [$this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-unused')]));
     }
 
@@ -158,18 +160,16 @@ class ComplexProductTest extends BaseTest
      */
     public function testGetVariationWithExactOptions()
     {
-        /** @var ComplexProduct $tshirt */
-        $tshirt = $this->objFromFixture(ComplexProduct::class, 'tshirt');
-        $this->assertNull(ComplexProductVariation::getVariationWithExactOptions($tshirt, [
+        $this->assertNull(ComplexProductVariation::getVariationWithExactOptions($this->tshirt, [
             $this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-unused'),
         ]));
 
-        $this->assertNull(ComplexProductVariation::getVariationWithExactOptions($tshirt, [
+        $this->assertNull(ComplexProductVariation::getVariationWithExactOptions($this->tshirt, [
             $this->idFromFixture(ProductAttributeOption::class, 'tshirt-colour-red'),
             $this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-unused'),
         ]));
 
-        $smallRed = ComplexProductVariation::getVariationWithExactOptions($tshirt, [
+        $smallRed = ComplexProductVariation::getVariationWithExactOptions($this->tshirt, [
             $this->idFromFixture(ProductAttributeOption::class, 'tshirt-colour-red'),
             $this->idFromFixture(ProductAttributeOption::class, 'tshirt-size-small'),
         ]);
@@ -184,14 +184,11 @@ class ComplexProductTest extends BaseTest
      */
     public function testVariationGetOptionsForUnselectedAttributes()
     {
-        /** @var ComplexProduct $product */
-        $tshirt = $this->objFromFixture(ComplexProduct::class, 'tshirt');
-
         /** @var ProductAttributeOption $sizeUnused */
         $sizeUnused = $this->objFromFixture(ProductAttributeOption::class, 'tshirt-size-unused');
 
         $variation = ComplexProductVariation::create();
-        $variation->setComponent('Product', $tshirt)
+        $variation->setComponent('Product', $this->tshirt)
             ->write();
         $variation->ProductAttributeOptions()->add($sizeUnused);
 
@@ -219,6 +216,49 @@ class ComplexProductTest extends BaseTest
     }
 
     /**
+     *
+     */
+    public function testIsOutOfStock()
+    {
+        $this->assertFalse($this->tshirt->IsOutOfStock());
+
+        $this->tshirt->OutOfStock = true;
+        $this->assertTrue($this->tshirt->IsOutOfStock());
+    }
+
+    /**
+     *
+     */
+    public function testIsOutOfStockNoVariations()
+    {
+        $product = ComplexProduct::create();
+        $product->write();
+
+        $this->assertTrue($product->IsOutOfStock());
+    }
+
+    /**
+     *
+     */
+    public function testIsOutOfStockExtension()
+    {
+        ComplexProduct::add_extension(OutOfStockExtension::class);
+        /** @var ComplexProduct $tshirtNewInstance */
+        $tshirtNewInstance = ComplexProduct::get()->byID($this->tshirt->ID);
+
+        $this->assertTrue($tshirtNewInstance->IsOutOfStock());
+    }
+
+    /**
+     *
+     */
+    public function testIsOutOfStockVariationsAllOutOfStock()
+    {
+        ComplexProductVariation::add_extension(OutOfStockExtension::class);
+        $this->assertTrue($this->tshirt->IsOutOfStock());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function setUp()
@@ -229,5 +269,7 @@ class ComplexProductTest extends BaseTest
         static::registerPublishingBlueprint(ComplexProductVariation::class);
 
         parent::setUp();
+
+        $this->tshirt = $this->objFromFixture(ComplexProduct::class, 'tshirt');;
     }
 }
