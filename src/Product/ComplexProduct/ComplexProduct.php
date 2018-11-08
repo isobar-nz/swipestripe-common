@@ -16,6 +16,7 @@ use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
  * @package SwipeStripe\Common\Product\ComplexProduct
  * @property string $Description
  * @property DBPrice $BasePrice
+ * @property bool $OutOfStock
  * @method HasManyList|ProductAttribute[] ProductAttributes()
  * @method HasManyList|ComplexProductVariation[] ProductVariations()
  */
@@ -34,6 +35,7 @@ class ComplexProduct extends \Page
     private static $db = [
         'Description' => 'Text',
         'BasePrice'   => 'Price',
+        'OutOfStock'  => 'Boolean',
     ];
 
     /**
@@ -60,6 +62,7 @@ class ComplexProduct extends \Page
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
             $fields->insertAfter('MenuTitle', $this->obj('Description')->scaffoldFormField());
             $fields->insertAfter('Description', $this->obj('BasePrice')->scaffoldFormField());
+            $fields->insertAfter('BasePrice', $this->obj('OutOfStock')->scaffoldFormField());
 
             $attributesConfig = GridFieldConfig_RecordEditor::create();
             $attributesConfig->addComponent(GridFieldOrderableRows::create());
@@ -74,5 +77,28 @@ class ComplexProduct extends \Page
         });
 
         return parent::getCMSFields();
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsOutOfStock(): bool
+    {
+        // Out of stock if flagged or there's no variations
+        $outOfStock = boolval($this->OutOfStock) || !$this->ProductVariations()->exists();
+
+        if (!$outOfStock) {
+            // If not marked out of stock, check if any variations are not out of stock
+            $outOfStock = true;
+            foreach ($this->ProductVariations() as $variation) {
+                if (!$variation->IsOutOfStock()) {
+                    $outOfStock = false;
+                    break;
+                }
+            }
+        }
+
+        $this->extend('IsOutOfStock', $outOfStock);
+        return $outOfStock;
     }
 }

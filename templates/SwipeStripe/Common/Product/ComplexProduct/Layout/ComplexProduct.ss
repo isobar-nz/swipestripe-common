@@ -14,7 +14,11 @@
             <p>{$Description}</p>
             <h4>{$BasePrice.Nice}</h4>
 
-            {$ComplexProductCartForm}
+            <% if $IsOutOfStock %>
+                <strong><%t SwipeStripe\\Common\\Product\\ComplexProduct\\Layout\\ComplexProduct.OUT_OF_STOCK 'Out of stock' %></strong>
+            <% else %>
+                {$ComplexProductCartForm}
+            <% end_if %>
         </section>
 
         <aside class="col-md-3">

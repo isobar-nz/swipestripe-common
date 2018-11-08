@@ -47,7 +47,11 @@ class ComplexProductCartFormRequestHandler extends FormRequestHandler
         if ($variation === null) {
             throw ValidationException::create(ValidationResult::create()
                 ->addError(_t(self::class . '.VARIATION_UNAVAILABLE',
-                    'Sorry, that combination of options is not currently available.')));
+                    'Sorry, that combination of options is not available.')));
+        } elseif ($variation->IsOutOfStock()) {
+            throw ValidationException::create(ValidationResult::create()
+                ->addError(_t(self::class . '.VARIATION_OUT_OF_STOCK',
+                    'Sorry, that combination of options is currently out of stock.')));
         }
 
         $this->ActiveCart->addItem($variation, $quantityField->dataValue());

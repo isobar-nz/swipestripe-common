@@ -3,7 +3,8 @@ en:
     ADD_TO_CART: 'Add to cart'
     QUANTITY: Quantity
   SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormRequestHandler:
-    VARIATION_UNAVAILABLE: 'Sorry, that combination of options is not currently available.'
+    VARIATION_OUT_OF_STOCK: 'Sorry, that combination of options is currently out of stock.'
+    VARIATION_UNAVAILABLE: 'Sorry, that combination of options is not available.'
   SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartFormValidator:
     CART_LOCKED: 'Your cart is currently locked because there is a checkout in progress. Please complete or cancel the checkout process to modify your cart.'
     INVALID_QUANTITY: 'You can''t add less than one item to your cart!'
@@ -25,6 +26,8 @@ en:
       one: 'A Complex Product Variation Options'
       other: '{count} Complex Product Variation Optionss'
     SINGULARNAME: 'Complex Product Variation Options'
+  SwipeStripe\Common\Product\ComplexProduct\Layout\ComplexProduct:
+    OUT_OF_STOCK: 'Out of stock'
   SwipeStripe\Common\Product\ComplexProduct\ProductAttribute:
     PLURALNAME: 'Product Attributes'
     PLURALS:
