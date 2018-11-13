@@ -1,4 +1,8 @@
 en:
+  SwipeStripe\Common\Checkout\CheckoutFormValidatorExtension:
+    OUT_OF_STOCK: 'Sorry, but the following product(s) in your cart are out of stock: {products}.'
+  SwipeStripe\Common\Product\ComplexProduct\CMS\VariationGridFieldItemRequest:
+    VARIATION_INCOMPLETE: 'Note: this variation does not have an option selected for every attribute, and so cannot yet be purchased.'
   SwipeStripe\Common\Product\ComplexProduct\CartForm\ComplexProductCartForm:
     ADD_TO_CART: 'Add to cart'
     QUANTITY: Quantity
