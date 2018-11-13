@@ -6,7 +6,9 @@ namespace SwipeStripe\Common\Product\ComplexProduct;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Forms\GridField\GridFieldDetailForm;
 use SilverStripe\ORM\HasManyList;
+use SwipeStripe\Common\Product\ComplexProduct\CMS\VariationGridFieldItemRequest;
 use SwipeStripe\Common\Product\ProductCMSPermissions;
 use SwipeStripe\Price\DBPrice;
 use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
@@ -71,9 +73,13 @@ class ComplexProduct extends \Page
                 GridField::create('ProductAttributes', null, $this->ProductAttributes(),
                     $attributesConfig));
 
+            $variationsConfig = GridFieldConfig_RecordEditor::create();
+            /** @var GridFieldDetailForm $variationsDetailForm */
+            $variationsDetailForm = $variationsConfig->getComponentByType(GridFieldDetailForm::class);
+            $variationsDetailForm->setItemRequestClass(VariationGridFieldItemRequest::class);
+
             $fields->addFieldToTab('Root.ProductVariations',
-                GridField::create('ProductVariations', null, $this->ProductVariations(),
-                    GridFieldConfig_RecordEditor::create()));
+                GridField::create('ProductVariations', null, $this->ProductVariations(), $variationsConfig));
         });
 
         return parent::getCMSFields();

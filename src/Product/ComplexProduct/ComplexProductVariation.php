@@ -84,7 +84,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     private static $summary_fields = [
         'OptionsSummary'  => 'Options',
-        'Price.Nice'      => 'Price',
+        'Price.Value'     => 'Price',
         'IsComplete.Nice' => 'Complete',
     ];
 
@@ -93,6 +93,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     private static $searchable_fields = [
         'ProductAttributeOptions.Title',
+        'IsComplete',
     ];
 
     /**
