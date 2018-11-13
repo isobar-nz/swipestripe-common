@@ -8,6 +8,7 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataQuery;
+use SilverStripe\ORM\FieldType\DBBoolean;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\ManyManyThroughList;
 use SilverStripe\ORM\Relation;
@@ -82,8 +83,9 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      * @var array
      */
     private static $summary_fields = [
-        'OptionsSummary' => 'Options',
-        'Price.Nice'     => 'Price',
+        'OptionsSummary'  => 'Options',
+        'Price.Value'     => 'Price',
+        'IsComplete.Nice' => 'Complete',
     ];
 
     /**
@@ -91,6 +93,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
      */
     private static $searchable_fields = [
         'ProductAttributeOptions.Title',
+        'IsComplete',
     ];
 
     /**
@@ -262,7 +265,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     public function getOptionsForUnselectedAttributes(?SS_List $selectedOptions = null): DataList
     {
         $selectedOptions = $selectedOptions ?? $this->ProductAttributeOptions();
-        $options = ProductAttributeOption::get();
+        $options = ProductAttributeOption::get()->filter('ProductAttribute.ProductID', $this->ProductID);
 
         $selectedAttributeIds = $selectedOptions->column('ProductAttributeID');
         if (!empty($selectedAttributeIds)) {
@@ -290,5 +293,16 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
 
         $this->extend('IsOutOfStock', $outOfStock);
         return $outOfStock;
+    }
+
+    /**
+     * @return DBBoolean
+     */
+    public function IsComplete(): DBBoolean
+    {
+        $complete = !$this->getOptionsForUnselectedAttributes()->exists();
+
+        $this->extend('IsComplete', $complete);
+        return DBBoolean::create_field('Boolean', $complete);
     }
 }
