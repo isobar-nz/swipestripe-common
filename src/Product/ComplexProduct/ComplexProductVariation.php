@@ -261,7 +261,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     public function getOptionsForUnselectedAttributes(?SS_List $selectedOptions = null): DataList
     {
         $selectedOptions = $selectedOptions ?? $this->ProductAttributeOptions();
-        $options = ProductAttributeOption::get();
+        $options = ProductAttributeOption::get()->filter('ProductAttribute.ProductID', $this->ProductID);
 
         $selectedAttributeIds = $selectedOptions->column('ProductAttributeID');
         if (!empty($selectedAttributeIds)) {
