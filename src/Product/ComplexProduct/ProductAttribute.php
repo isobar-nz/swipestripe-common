@@ -91,6 +91,7 @@ class ProductAttribute extends DataObject
     public function getCMSFields()
     {
         $this->beforeUpdateCMSFields(function (FieldList $fields) {
+            $fields->removeByName('Sort');
             $optionsGridField = $fields->dataFieldByName('ProductAttributeOptions');
 
             if ($optionsGridField instanceof GridField) {
