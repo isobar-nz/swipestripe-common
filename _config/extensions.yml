@@ -1,0 +1,7 @@
+---
+Name: swipestripe-common-extensions
+---
+
+SwipeStripe\Order\Checkout\CheckoutFormValidator:
+  extensions:
+  - SwipeStripe\Common\Checkout\CheckoutFormValidatorExtension
