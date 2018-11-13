@@ -128,6 +128,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
             $variationOptionIDs = $variation->ProductAttributeOptions()
                 ->sort('ID')
                 ->column('ID');
+            $variationOptionIDs = array_map('intval', $variationOptionIDs);
 
             if ($variationOptionIDs === $optionIDs) {
                 return $variation;
