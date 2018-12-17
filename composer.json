@@ -25,16 +25,11 @@
             "type": "vcs",
             "url": "https://github.com/littlegiant/silverstripe-swipestripe.git",
             "no-api": true
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/hchokshi/silverstripe-wkhtml.git",
-            "no-api": true
         }
     ],
     "require-dev": {
         "php-http/guzzle6-adapter": "^1.1",
-        "silverstripe/recipe-cms": "^4.2",
+        "silverstripe/cms": "^4.2",
         "phpunit/phpunit": "^5.7",
         "php-coveralls/php-coveralls": "^2.1"
     },
