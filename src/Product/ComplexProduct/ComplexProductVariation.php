@@ -184,7 +184,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     /**
      * @inheritDoc
      */
-    public function getPrice(): DBPrice
+    public function getBasePrice(): DBPrice
     {
         $basePrice = $this->Product()->BasePrice->getMoney();
 
@@ -193,6 +193,16 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
         }
 
         return DBPrice::create_field(DBPrice::INJECTOR_SPEC, $basePrice);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPrice(): DBPrice
+    {
+        $basePrice = $this->getBasePrice();
+        $this->extend('updatePrice', $basePrice);
+        return $basePrice;
     }
 
     /**

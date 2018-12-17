@@ -44,19 +44,19 @@ class ComplexProductTest extends BaseTest
     {
         /** @var ComplexProductVariation $smallRed */
         $smallRed = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-small-red');
-        $this->assertTrue($smallRed->getPrice()->getMoney()->equals(new Money(1000, $this->currency)));
+        $this->assertTrue($smallRed->getBasePrice()->getMoney()->equals(new Money(1000, $this->currency)));
 
         /** @var ComplexProductVariation $smallGold */
         $smallGold = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-small-gold');
-        $this->assertTrue($smallGold->getPrice()->getMoney()->equals(new Money(1500, $this->currency)));
+        $this->assertTrue($smallGold->getBasePrice()->getMoney()->equals(new Money(1500, $this->currency)));
 
         /** @var ComplexProductVariation $largeRed */
         $largeRed = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-large-red');
-        $this->assertTrue($largeRed->getPrice()->getMoney()->equals(new Money(1200, $this->currency)));
+        $this->assertTrue($largeRed->getBasePrice()->getMoney()->equals(new Money(1200, $this->currency)));
 
         /** @var ComplexProductVariation $largeGold */
         $largeGold = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-large-gold');
-        $this->assertTrue($largeGold->getPrice()->getMoney()->equals(new Money(1700, $this->currency)));
+        $this->assertTrue($largeGold->getBasePrice()->getMoney()->equals(new Money(1700, $this->currency)));
 
         /** @var ProductAttributeOption $goldColour */
         $goldColour = $this->objFromFixture(ProductAttributeOption::class, 'tshirt-colour-gold');
@@ -64,12 +64,12 @@ class ComplexProductTest extends BaseTest
         $goldColour->writeToStage(Versioned::DRAFT);
 
         // No price change before publish
-        $this->assertTrue($smallGold->getPrice()->getMoney()->equals(new Money(1500, $this->currency)));
-        $this->assertTrue($largeGold->getPrice()->getMoney()->equals(new Money(1700, $this->currency)));
+        $this->assertTrue($smallGold->getBasePrice()->getMoney()->equals(new Money(1500, $this->currency)));
+        $this->assertTrue($largeGold->getBasePrice()->getMoney()->equals(new Money(1700, $this->currency)));
 
         $goldColour->publishRecursive();
-        $this->assertTrue($smallGold->getPrice()->getMoney()->equals(new Money(2000, $this->currency)));
-        $this->assertTrue($largeGold->getPrice()->getMoney()->equals(new Money(2200, $this->currency)));
+        $this->assertTrue($smallGold->getBasePrice()->getMoney()->equals(new Money(2000, $this->currency)));
+        $this->assertTrue($largeGold->getBasePrice()->getMoney()->equals(new Money(2200, $this->currency)));
     }
 
     /**
@@ -79,7 +79,7 @@ class ComplexProductTest extends BaseTest
     {
         /** @var ComplexProductVariation $smallRed */
         $smallRed = $this->objFromFixture(ComplexProductVariation::class, 'tshirt-small-red');
-        $smallRedOriginalPrice = $smallRed->getPrice()->getMoney();
+        $smallRedOriginalPrice = $smallRed->getBasePrice()->getMoney();
 
         $cart = Order::singleton()->createCart();
         $cart->addItem($smallRed);
@@ -93,7 +93,7 @@ class ComplexProductTest extends BaseTest
         $tshirt->writeToStage(Versioned::LIVE);
 
         // Live variation's price should update
-        $this->assertTrue($smallRed->getPrice()->getMoney()->equals(new Money(1500, $this->currency)));
+        $this->assertTrue($smallRed->getBasePrice()->getMoney()->equals(new Money(1500, $this->currency)));
 
         // Locked item's price should not change
         $this->assertTrue($cart->Total()->getMoney()->equals($smallRedOriginalPrice));

@@ -47,6 +47,16 @@ class SimpleProduct extends \Page implements PurchasableInterface
      */
     public function getPrice(): DBPrice
     {
+        $price = $this->getBasePrice();
+        $this->extend('updatePrice', $price);
+        return $price;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBasePrice(): DBPrice
+    {
         return $this->getField('Price');
     }
 
