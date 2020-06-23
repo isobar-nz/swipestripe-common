@@ -53,6 +53,7 @@ class ComplexProduct extends \Page
      */
     private static $owns = [
         'ProductAttributes',
+        'ProductVariations',
     ];
 
     /**
