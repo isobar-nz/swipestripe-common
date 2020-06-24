@@ -24,11 +24,11 @@ use Symbiote\GridFieldExtensions\GridFieldAddExistingSearchButton;
 /**
  * Class ComplexProductVariation
  * @package SwipeStripe\Common\Product\ComplexProduct
- * @property int $ProductID
- * @property bool $OutOfStock
+ * @property int          $ProductID
+ * @property bool         $OutOfStock
  * @property-read DBPrice $Price
- * @property-read string $Description
- * @property-read string $OptionsSummary
+ * @property-read string  $Description
+ * @property-read string  $OptionsSummary
  * @method ComplexProduct Product()
  */
 class ComplexProductVariation extends DataObject implements PurchasableInterface
@@ -97,7 +97,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     ];
 
     /**
-     * @param ComplexProduct $product
+     * @param ComplexProduct                                        $product
      * @param array|ProductAttributeOption[]|int[]|SS_List|iterable $options
      * @return DataList|static[]
      */
@@ -118,7 +118,7 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
     }
 
     /**
-     * @param int[] $optionIDs
+     * @param int[]               $optionIDs
      * @param null|ComplexProduct $product
      * @return null|static
      */
@@ -314,5 +314,13 @@ class ComplexProductVariation extends DataObject implements PurchasableInterface
 
         $this->extend('IsComplete', $complete);
         return DBBoolean::create_field('Boolean', $complete);
+    }
+
+    public function write($showDebug = false, $forceInsert = false, $forceWrite = false, $writeComponents = false)
+    {
+        // All writes are forced for complex products - cart items always use modified date
+        // to version nested relations (e.g. attributes / options) so we need to bump up this
+        // date on every cms action
+        return parent::write($showDebug, $forceInsert, true, $writeComponents);
     }
 }
